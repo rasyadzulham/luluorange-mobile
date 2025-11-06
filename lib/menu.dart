@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:luluorange_mobile/widgets/left_drawer.dart';
+import 'package:luluorange_mobile/product_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -9,7 +10,7 @@ class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("All Products", Icons.sports_cricket_outlined, Colors.blue),
     ItemHomepage("My Products", Icons.person_outline_rounded, Colors.green),
-    ItemHomepage("Create Product", Icons.add, Colors.red),
+    ItemHomepage("Add Product", Icons.add, Colors.red),
   ];
   @override
   Widget build(BuildContext context) {
@@ -159,6 +160,14 @@ class ItemCard extends StatelessWidget {
             ..showSnackBar(
               SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
             );
+          // Navigate ke route yang sesuai (tergantung jenis tombol)
+          if (item.name == "Add Product") {
+            Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductFormPage(),
+            ));
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:luluorange_mobile/menu.dart';
-// TODO: Impor halaman NewsFormPage jika sudah dibuat
+import 'package:luluorange_mobile/product_form.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -56,10 +56,11 @@ class LeftDrawer extends StatelessWidget {
             title: const Text('Add Product'),
             // Bagian redirection ke ProductFormPage
             onTap: () {
-              /*
-              TODO: Buatlah routing ke NewsFormPage di sini,
-              setelah halaman NewsFormPage sudah dibuat.
-              */
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductFormPage(),
+                  ));
             },
           ),
         ],
