@@ -65,3 +65,123 @@ Hot reload merupakan cara yang termudah dan tercepat dalam menerapkan perubahan 
 
 Hot restart memiliki fungsionalitas yang sedikit berbeda dibandingkan hot reload. Hot restart lebih seperti full restart aplikasi flutter tetapi lebih cepat. Hot reload akan menghapus state dari aplikasi dan kode akan dicompile kembali sehingga aplikasi akan mulai dari state default. Hot restart membutuhkan waktu lebih lama dari hot reload tetapi lebih cepat dari fungsi full restart.
 </details>
+
+<details>
+<summary>Tugas 8</summary>
+
+## Navigator.push() vs Navigator.pushReplacement()🖐🏻
+
+Navigator.push() menambahkan suatu route ke dalam stack route yang dikelola oleh Navigator. Method ini menyebabkan route yang ditambahkan berada pada paling atas stack, sehingga route yang baru saja ditambahkan tersebut akan muncul dan ditampilkan kepada pengguna. Sedangkan navigator.pushReplacement() menghapus route yang sedang ditampilkan kepada pengguna dan menggantinya dengan suatu route. Method ini menyebabkan aplikasi untuk berpindah dari route yang sedang ditampilkan kepada pengguna ke suatu route yang diberikan. Pada stack route yang dikelola Navigator, route lama pada atas stack akan digantikan secara langsung oleh route baru yang diberikan tanpa mengubah kondisi elemen stack yang berada di bawahnya. Jadi, push() akan menumpuk route yang sudah ada, sehingga bisa di back ke ke route yang sudah ada sebelumnya. Di sisi lain, pushReplacement() mengganti route yang sudah ada dengan route baru secara langsung. Contoh pengaplikasian method Navigator.push() adalah ketika melihat detail dari produk, maka user bisa kembali ke homepage. Contoh pengaplikasian method Navigator.pushReplacement() adalah ketika user telah login dan akan diarahkan ke homepage. Apabila user sudah diarahkan ke homepage, maka tidak dapat kembali lagi ke halaman login.
+
+
+## Widget hierarchy⽊
+
+Dalam Flutter, hierarki widget seperti Scaffold, AppBar, dan Drawer dimanfaatkan untuk membangun struktur halaman yang konsisten di seluruh aplikasi dengan menyediakan kerangka tata letak yang seragam. Scaffold berperan sebagai wadah utama yang menampung elemen-elemen umum seperti AppBar di bagian atas untuk menampilkan judul atau tombol navigasi, serta Drawer di sisi samping untuk navigasi antarhalaman. Dengan menempatkan ketiga widget ini secara konsisten di setiap halaman, pengembang dapat menjaga keseragaman tampilan, memudahkan pengguna bernavigasi, dan mempercepat proses pengembangan karena komponen yang sering digunakan dapat dibuat sebagai widget terpisah dan digunakan kembali di seluruh aplikasi.
+
+## Kelebihan menggunakan layout widget📐
+Dalam konteks desain antarmuka, penggunaan layout widget seperti Padding, SingleChildScrollView, dan ListView memberikan kelebihan penting dalam menampilkan elemen-elemen form agar lebih rapi, responsif, dan mudah digunakan. Padding membantu menjaga jarak antar elemen sehingga tampilan form terlihat bersih dan nyaman dibaca, SingleChildScrollView memungkinkan seluruh form dapat digulir ketika kontennya lebih panjang dari layar sehingga mencegah overflow, sedangkan ListView memudahkan penataan elemen form dalam daftar yang bisa di-scroll secara efisien dengan performa yang baik. Kombinasi ketiganya membuat form tampil proporsional di berbagai ukuran layar serta meningkatkan pengalaman pengguna dengan tata letak yang terstruktur dan responsif.
+
+Contoh penggunaan Padding dan SingleChildScrollView:
+
+``` dart
+...
+body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:[
+              // === Product name ===
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Name",
+                    labelText: "Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _name = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Nama produk tidak boleh kosong!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      )
+...
+```
+
+Contoh Penggunaan ListView pada drawer:
+```dart
+...
+return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color(0xFFFFA726),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Luluorange',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text("Your number one sporty clothes and apparels!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                    )
+                ),
+              ],
+            ),
+          ),
+...
+```
+
+## Menyesuaikan warna tema🎨
+
+Untuk menyesuaikan tema aplikasi secara konsisten, saya set primary color dan secondary color di file main.dart widget MyApp sebagai berikut.
+
+``` dart
+...
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Luluorange',
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(primary: Color(0xFFFFA726)) // ganti warna sesuai tema aplikasi
+        .copyWith(secondary: Colors.blueAccent[400]),
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+...
+```
+</details>
