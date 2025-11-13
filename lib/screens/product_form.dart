@@ -16,11 +16,11 @@ class ProductFormPage extends StatefulWidget {
 
 class _ProductFormPageState extends State<ProductFormPage> {
     final _formKey = GlobalKey<FormState>();
-    // name, price, desscription, category, thumbnail, isFeatured, arting
+    // name, price, desscription, category, thumbnail, isFeatured, rating
     String _name = "";
     String _description = "";
     String _category = "atasan"; // default
-    String _thumbnail = "";
+    String _imageUrl = "";
     double _rating = 0;
     bool _isFeatured = false; // default
     double _price = 0;
@@ -78,7 +78,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       },
                     ),
                   ),
-                  // === Product proce ===
+
+                  // === Product price ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: TextFormField(
@@ -89,7 +90,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-                      keyboardType: TextInputType.number, // ⬅️ Biar cuma angka yang muncul
+                      keyboardType: TextInputType.number, 
                       onChanged: (value) {
                         setState(() {
                           _price = double.tryParse(value) ?? 0.0; // ubah teks ke angka
@@ -109,10 +110,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           return "Harga tidak boleh negatif!";
                         }
 
-                        return null; // ✅ valid
+                        return null;
                       },
                     ),
                   ),
+
                   // === Category ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -141,6 +143,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       onChanged: (value) => setState(() => selectedValue = value),
                     )
                   ),
+
                   // === Product description ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -166,6 +169,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       },
                     ),
                   ),
+
                   // === Product rating ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -204,6 +208,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       ]
                     ),
                   ),
+
                   // === Is featured ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -222,6 +227,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       ],
                     ),
                   ),
+
                   // === Thumbnail ===
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -235,21 +241,37 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       ),
                       onChanged: (String? value) {
                         setState(() {
-                          _thumbnail = value!;
+                          _imageUrl = value!;
                         });
                       },
                       validator: (String? value) {
-                        final pattern = RegExp(r'^(https?:\/\/)[\w\-\.]+\.[a-z]{2,}\/?.*$');
                         if (value == null || value.isEmpty) {
-                          return "Thumbnail tidak boleh kosong!";
+                          return "URL produk tidak boleh kosong!";
                         }
-                        if (!pattern.hasMatch(value)) {
-                            return 'Format URL tidak valid';
+
+                        // Mulai validasi URI
+                        try {
+                          final uri = Uri.parse(value);
+
+                          if (uri.scheme != 'http' && uri.scheme != 'https') {
+                            return 'Hanya URL http atau https yang diizinkan';
                           }
+
+                          if (uri.host.isEmpty) {
+                            return 'URL tidak valid (host tidak ditemukan)';
+                          }
+
+                        } on FormatException {
+                          // Jika Uri.parse gagal, formatnya pasti salah
+                          return 'Format URL tidak valid';
+                        }
+
+                        // Jika semua lolos
                         return null;
                       },
                     ),
                   ),
+
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
@@ -261,10 +283,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // TODO: Replace the URL with your app's URL
-                            // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
-                            // If you using chrome,  use URL http://localhost:8000
-                            
                             final response = await request.postJson(
                               "http://localhost:8000/create-flutter/",
                               jsonEncode({
@@ -272,7 +290,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                                 "price": _price,
                                 "rating": _rating,
                                 "description": _description,
-                                "thumbnail": _thumbnail,
+                                "imageUrl": _imageUrl,
                                 "category": _category,
                                 "is_featured": _isFeatured,
                               }),

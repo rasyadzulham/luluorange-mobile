@@ -50,24 +50,46 @@ class ProductEntryCard extends StatelessWidget {
                 Text(
                   product.name,
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1, // Batasi maksimal 2 baris
+                  overflow: TextOverflow.ellipsis, // Jika lebih, tampilkan "..."
+                ),
+                const SizedBox(height: 3),
+
+                // Price
+                Text(
+                  "Rp${product.price.toString()}",
+                  style: const TextStyle(
+                    fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 3),
 
                 // Category
                 Text('Category: ${product.category}'),
-                const SizedBox(height: 6),
+                const SizedBox(height: 3),
 
-                // Content preview
+                // Description Preview
                 Text(
                   product.description.length > 100
                       ? '${product.description.substring(0, 100)}...'
                       : product.description,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: Colors.black54),
+                ),
+                const SizedBox(height: 3),
+
+                // Rating
+                Text(
+                  "${product.rating.toString()}/5",
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
                 const SizedBox(height: 6),
 
