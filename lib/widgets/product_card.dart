@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:luluorange_mobile/screens/product_form.dart';
 import 'package:luluorange_mobile/screens/menu.dart';
+import 'package:luluorange_mobile/screens/product_entry_list.dart';
 
 class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
@@ -33,6 +34,15 @@ class ItemCard extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ProductFormPage(),
             ));
+          }
+          // Add this condition in your onTap handler
+          else if (item.name == "All Products") {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductEntryListPage()
+                  ),
+              );
           }
         },
         // Container untuk menyimpan Icon dan Text
