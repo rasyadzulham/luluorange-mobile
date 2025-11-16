@@ -185,3 +185,33 @@ class MyApp extends StatelessWidget {
 ...
 ```
 </details>
+
+
+<details>
+<summary>Tugas 9</summary>
+
+## Peran model saat mengirim/mengambil data JSON
+
+Membuat model Dart saat mengambil atau mengirim data JSON itu penting karena model membantu kita menjaga struktur data tetap jelas dan konsisten. Kalau kita langsung memakai Map<String, dynamic>, kita tidak punya keamanan tipe yang kuat, sehingga data bisa saja punya tipe yang salah tanpa kita sadari dan baru ketahuan ketika aplikasi sudah berjalan, yang tentu lebih berbahaya. Dengan model, kita juga bisa memanfaatkan null-safety, jadi kita tahu mana data yang wajib ada dan mana yang boleh kosong. Selain itu, penggunaan model membuat kode lebih mudah dirawat dan dibaca, terutama saat aplikasi makin besar atau ketika API berubah. Tanpa model, kode akan mudah berantakan karena kita harus mengakses key JSON di banyak tempat, yang rawan typo dan error. Jadi, model bukan hanya soal rapih, tapi juga soal mencegah bug dan mempermudah pengembangan ke depannya.
+
+## html vs CookieRequest
+
+Dalam konteks tugas ini, package http dan CookieRequest sama-sama digunakan untuk melakukan komunikasi dengan server, tetapi keduanya punya peran yang berbeda.
+
+Package http berfungsi untuk melakukan request sederhana ke server—seperti GET, POST, PUT, dan DELETE—tanpa menyimpan informasi sesi atau login. Jadi setiap kali kita mengirim request menggunakan http, server menganggap kita sebagai pengguna baru karena tidak ada cookie atau data sesi yang ikut dikirim. Package ini cocok untuk request biasa yang tidak membutuhkan autentikasi atau penyimpanan state.
+
+Sementara itu, CookieRequest (biasanya dari package pbp_django_auth) dibuat khusus untuk menangani autentikasi pengguna dan penyimpanan cookie session Django. Artinya, ketika kita login menggunakan CookieRequest, cookie yang diberikan server akan disimpan, dan setiap request berikutnya secara otomatis membawa cookie tersebut. Dengan begitu, server bisa mengenali kita sebagai user yang sudah login. Ini berguna untuk fitur seperti melihat data profil, membuat postingan, atau mengakses halaman yang butuh login.
+
+Jadi, http menangani request biasa, tidak menyimpan cookie, tidak tahu status login. Sedangkan CookieRequest menangani request yang butuh autentikasi, menyimpan cookie session, dan mempertahankan status login di server.
+
+Karena itulah di tugas ini http biasanya dipakai untuk fetch data umum, sedangkan CookieRequest dipakai untuk proses login dan request yang membutuhkan sesi yang berkelanjutan.
+
+## Mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter?
+
+Instance CookieRequest perlu dibagikan ke semua komponen dalam aplikasi Flutter karena objek ini menyimpan informasi sesi pengguna, seperti cookie autentikasi dan status login. Kalau setiap widget membuat instance CookieRequest sendiri, maka cookie yang disimpan tidak akan sama, sehingga server tidak bisa mengenali bahwa itu adalah pengguna yang sudah login. Akibatnya, fitur yang membutuhkan autentikasi seperti mengambil data user, membuat data baru, atau mengakses endpoint yang dilindungi tidak akan bekerja dengan benar. Dengan membagikan satu instance CookieRequest ke seluruh aplikasi (biasanya lewat Provider), semua halaman dan widget bisa memakai cookie yang sama secara konsisten. Hal ini memastikan bahwa status login tetap terjaga, user tidak perlu login berulang kali, dan interaksi dengan server menjadi lebih stabil dan teratur di seluruh aplikasi.
+
+## Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+
+Agar Flutter bisa berkomunikasi dengan Django, ada beberapa pengaturan penting yang harus dilakukan di kedua sisi. Pertama, kita perlu menambahkan 10.0.2.2 ke ALLOWED_HOSTS karena emulator Android tidak bisa langsung mengakses localhost, sehingga Django harus diizinkan menerima request dari alamat khusus tersebut. Lalu, kita juga harus mengaktifkan CORS supaya Django mengizinkan request dari aplikasi Flutter yang dianggap berasal dari origin berbeda. Selain itu, pengaturan cookie seperti SameSite dan konfigurasi session juga perlu disesuaikan agar cookie autentikasi bisa dikirim dan dipakai oleh Flutter, terutama untuk fitur login. Di sisi Android, kita wajib menambahkan izin akses internet karena tanpa izin tersebut aplikasi Flutter tidak bisa melakukan HTTP request sama sekali. Kalau salah satu dari konfigurasi ini tidak dilakukan dengan benar, aplikasi bisa mengalami berbagai masalah seperti request ditolak, cookie tidak terbaca, login tidak bekerja, hingga Flutter sama sekali tidak bisa terhubung ke server Django.
+
+</details>
