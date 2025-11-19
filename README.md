@@ -276,6 +276,9 @@ Flutter kemudian menerima response dari Django, termasuk cookie session yang sec
 
 13. Untuk fungsi logout, saya menaruhnya pada left_drawer.dart, tambahkan final request = context.watch<CookieRequest>(); pada method buildnya lalu buat ListTile baru untuk logout dan pada onTap, Gunakan async yang akan mengunjungi endpoint logout pada django
 
-Selesai~~~
+
+[![Build Status](https://app.bitrise.io/app/22ef8ea9-0f20-42d0-b222-0d63605a1611/status.svg?token=07ZfmgeaGmA8EexxebXUVw&branch=master)](https://app.bitrise.io/app/22ef8ea9-0f20-42d0-b222-0d63605a1611)
+
+Download aplikasi versi terbaru: [Downlaoad APK](https://app.bitrise.io/app/22ef8ea9-0f20-42d0-b222-0d63605a1611/installable-artifacts/eb1a3c8b2dada158/public-install-page/f939ca202e6106991b3a345a44c75bb0)
 
 </details>
